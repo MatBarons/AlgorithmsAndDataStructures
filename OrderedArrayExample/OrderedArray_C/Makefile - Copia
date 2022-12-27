@@ -1,0 +1,22 @@
+#LA SEGUENTE MACRO E' STATA AGGIUNTA PER COMPILAZIONE SU PC DI RISERVA...
+CC = gcc
+
+all: bin/ordered_array bin/ordered_array_tests
+
+CFLAGS = -g -Wall -Wextra -Wpedantic -Wconversion
+
+INCLUDES = src/*.h
+
+COMMON_DEPS = $(INCLUDES) Makefile
+
+build/%.o: src/%.c $(COMMON_DEPS)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+bin/ordered_array: build/ordered_array.o build/ordered_array_main.o $(COMMON_DEPS)
+	$(CC) -o bin/ordered_array build/ordered_array.o build/ordered_array_main.o
+
+bin/ordered_array_tests: build/ordered_array_tests.o build/ordered_array.o build/unity.o $(COMMON_DEPS)
+	$(CC) -o bin/ordered_array_tests  build/ordered_array_tests.o build/ordered_array.o build/unity.o
+
+clean:
+	rm -f build/* bin/*
